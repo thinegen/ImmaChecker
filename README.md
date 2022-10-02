@@ -17,16 +17,19 @@ Wir haben die Vergabe über eine AirTable gelöst (Hierfür ist das Script ausge
      - Apple: https://docs.python-guide.org/starting/install3/osx/
 6. Install pip
    - Anleitung findet ihr in den oben genannten Anleitungen!
-7. ladet euch die beiden Dateien (Imma_Checking.py & Setup.py) in einen neuen Ordner herunter!
-8. öffnet eure Commandline und führt Setup.py aus
-   - Windows: 
-     - a) in der Suche (rechts vom Windows Buton in der Task-Leiste 'cmd' eingeben
-     - b) zu eurem Ordner (dort wo ihr die csv-Tabelle gespeichert habt) navigieren. Beispiel: `cd c:\Users\chris\Medis\Tickets\2022\Runde1`
-     - c) startet die Python-Datei: `python Setup.py`
-     - d) Python installiert alle nötigen Packages für euch
+7. ladet euch die beiden Dateien (Imma_Checking.py & requirements.txt) in einen neuen Ordner herunter!
+8. öffnet eure Commandline und installiert die wichtigsten Packages 
+     - a) öffnet eure CommandLine/Eingabeaufforderung
+     - b) navigiert zu eurem Ordner (dort wo ihr die csv-Tabelle gespeichert habt) navigieren. Beispiel (Windows): `cd c:\Users\chris\Medis\Tickets\2022\Runde1`
+     - c) gebt folgenden Befehl ein: `pip install virtualenv`
+     - d) danach geht es mit diesem Befehl weiter: `virtualenv ImmaChecking` (Ihr erstellt eine virtuelle Umgebung für die Packages)
+     - e) ihr aktiviert die Umgebung mit diesem Befehl:
+       - Apple: `source ImmaChecking/bin/activate`
+       - Windows: `ImmaChecking\Scripts\activate`
+       Ihr solltet jetzt ImmaChecking in Klammern am linken Bildrand sehen
+     - f) Danach installiert ihr alle Packages mit diesem Befehl: `pip install -r requirements.txt`
+     
 
-    - Apple:
-      - tba
 9. Öffnet die Imma_Checking.py Datei in eurer Programmiersoftware der Wahl - oder auch einfach im Editor
    - Passt eure Parameter in der Datei an - haltet hier gerne nochmal Rücksprache mit mir!
 10. Wenn alles eingestellt ist startet ihr das Programm mit folgendem Befehl: `python Imma_Checking.py`
