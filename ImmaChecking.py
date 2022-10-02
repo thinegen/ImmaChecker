@@ -38,6 +38,14 @@ AIRTABLE_VORNAME = 'Name copy'
 # Wie heisst die Spalte mit dem Nachnamen in eurer AirTable?
 AIRTABLE_NACHNAME = 'Name'
 
+#Wollt ihr nach Uni-Mail checken?
+CHECK_FOR_MAIL = True
+#CHECK_FOR_MAIL = False
+
+
+# Wie heisst die Spalte mit der E-Mail in eurer AirTable?
+AIRTABLE_Mail = 'MAIL'
+
 #Das hier ist die Schwelle der Übereinstimmung, je näher an 1.0 desto mehr fliegen raus (Cave bei Doppelnamen etc.)
 #0.669 hat sich hier bis jetzt gut bewährt
 levensthein_cutoff = .66
@@ -281,14 +289,7 @@ df1['semester_ok']= df1.apply(lambda row : list_check(semester, str(row['content
 
 #Check ob das Semester von euch validiert ist
 df1['Fach_ok']= df1.apply(lambda row : list_check(studiengaenge, row['content']),axis=1)
-
-
-
-
- 
-
-
-
+          
 
 
  
@@ -301,10 +302,16 @@ df1['name_ok']= df1.apply(lambda row: lev_check(row['lev_ratio'], levensthein_cu
 
 df1['error']=df1.apply(lambda row: bool_check([row['semester_ok'], row['name_ok'], row['Fach_ok']]), axis=1)
 
+if CHECK_FOR_MAIL:
+          df1['mail_error']= df1.apply(lambda row: string_check(AIRTABLE_MAIL_SUFFIX, row[AIRTABLE_MAIL]), axis=1)
+          no_pdf = no_pdf.append(df1[df1['mail_error']== False])
+          df1= df1= df1[df1['error']== True]
+
 no_pdf= no_pdf.append(df1[df1['error']!= False])
 
 df1= df1[df1['error']== False]
 
+          
 
  
 
