@@ -36,3 +36,4 @@ Wir haben die Vergabe über eine AirTable gelöst (Hierfür ist das Script ausge
 11. Ihr erhaltet im besten Fall einen neuen Ordner mit den runtergeladenen PDF-Dateien und einen Output-Ordner. Hier findet ihr 2 Excel-Listen, eine mit den fehlerhaften-PDFs -> dei müsstet ihr noch per Hand checken und eine Liste mit allen Einträgen die die Prüfung erfolgreich bestanden haben. 
 12. Je nach eurem Vorgehen müsst ihr jetzt nur noch die Tickets verteilen
 
+Bei Fragen wendet euch gerne an christopher@medimeisterschaften.com !
