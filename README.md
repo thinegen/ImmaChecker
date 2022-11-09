@@ -19,10 +19,9 @@ Wir haben die Vergabe über eine AirTable gelöst (Hierfür ist das Script ausge
      - kleinen Tipp zur Python Installation gibt es hier : 
          - Win: https://www.python.org/downloads/release/python-3913/
          - Apple: https://www.makeuseof.com/how-to-install-python-on-mac/
-6. Install pip
-   - Anleitung findet ihr in den oben genannten Anleitungen!
-7. ladet euch die beiden Dateien (Imma_Checking.py & requirements.txt) in einen neuen Ordner herunter!
-8. öffnet eure Commandline und installiert die wichtigsten Packages 
+         
+6. ladet euch die beiden Dateien (Imma_Checking.py & requirements.txt) in einen neuen Ordner herunter!
+7. öffnet eure Commandline und installiert die wichtigsten Packages 
      - a) öffnet eure CommandLine/Eingabeaufforderung
      - b) navigiert zu eurem Ordner (dort wo ihr die csv-Tabelle gespeichert habt) navigieren. Beispiel (Windows): `cd c:\Users\MediOrga\Medis\Tickets\2022\Runde1`
      - c) gebt folgenden Befehl ein: `pip install virtualenv`
@@ -34,10 +33,10 @@ Wir haben die Vergabe über eine AirTable gelöst (Hierfür ist das Script ausge
      - f) Danach installiert ihr alle Packages mit diesem Befehl: `pip install -r requirements.txt`
      
 
-9. Öffnet die Imma_Checking.py Datei in eurer Programmiersoftware der Wahl - oder auch einfach im Editor
+8. Öffnet die Imma_Checking.py Datei in eurer Programmiersoftware der Wahl - oder auch einfach im Editor
    - Passt eure Parameter in der Datei an - haltet hier gerne nochmal Rücksprache mit mir!
-10. Wenn alles eingestellt ist startet ihr das Programm mit folgendem Befehl: `python Imma_Checking.py`
-11. Ihr erhaltet im besten Fall einen neuen Ordner mit den runtergeladenen PDF-Dateien und einen Output-Ordner. Hier findet ihr 2 Excel-Listen, eine mit den fehlerhaften-PDFs -> dei müsstet ihr noch per Hand checken und eine Liste mit allen Einträgen die die Prüfung erfolgreich bestanden haben. 
-12. Je nach eurem Vorgehen müsst ihr jetzt nur noch die Tickets verteilen
+9. Wenn alles eingestellt ist startet ihr das Programm mit folgendem Befehl: `python Imma_Checking.py`
+10. Ihr erhaltet im besten Fall einen neuen Ordner mit den runtergeladenen PDF-Dateien und einen Output-Ordner. Hier findet ihr 2 Excel-Listen, eine mit den fehlerhaften-PDFs -> dei müsstet ihr noch per Hand checken und eine Liste mit allen Einträgen die die Prüfung erfolgreich bestanden haben. 
+11. Je nach eurem Vorgehen müsst ihr jetzt nur noch die Tickets verteilen
 
-Bei Fragen wendet euch gerne an christopher@medimeisterschaften.com !
+Bei Fragen meldet euch gerne!
