@@ -1,4 +1,4 @@
-pandas==1.5.0
-numpy==1.23.3
-tika==1.24
-fuzzywuzzy0.18.0
+pandas
+numpy
+fuzzywuzzy
+xlsxwriter
