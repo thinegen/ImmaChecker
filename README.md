@@ -11,16 +11,20 @@ Wir haben die Vergabe über eine AirTable gelöst (Hierfür ist das Script ausge
 2. Erstellt euer Formular und baut ein Upload-Feld ein! (P.S. betont mehrfach, dass es nur originale PDF-Dateien sein sollen, das spart euch unfassbar viel Arbeit im Nachhinein!
 3. Verteilt den Link und lasst eure Studis sich eintragen.
 4. Nach Ablauf der Fristen ladet euch die AirTable als Tabelle (.csv) runter.
-5. stellt sicher, dass ihr Python3 auf eurem PC installiert habt.
-   - Falls ihr das nicht habt findet ihr eine gute Anleitung hier: 
-     - Windows: https://docs.python-guide.org/starting/install3/win/
-     - Apple: https://docs.python-guide.org/starting/install3/osx/
+5. stellt sicher, dass ihr Python3 auf eurem PC installiert habt - ich finde VS-Code am angenehmsten - hier ist gleich eine Anleitung dazu!.
+   - Windows: https://code.visualstudio.com/docs/setup/windows
+   - Windows: https://www.python.org/downloads/release/python-3913/ hier einfach den entsprechenden Installer auswählen!
+   - Apple: https://code.visualstudio.com/docs/setup/mac
+   - Apple:  https://www.python.org/downloads/release/python-3913/ hier einfach den entsprechenden Installer auswählen!
+     - kleinen Tipp zur Python Installation gibt es hier : 
+         - Win: https://www.python.org/downloads/release/python-3913/
+         - Apple: https://www.makeuseof.com/how-to-install-python-on-mac/
 6. Install pip
    - Anleitung findet ihr in den oben genannten Anleitungen!
 7. ladet euch die beiden Dateien (Imma_Checking.py & requirements.txt) in einen neuen Ordner herunter!
 8. öffnet eure Commandline und installiert die wichtigsten Packages 
      - a) öffnet eure CommandLine/Eingabeaufforderung
-     - b) navigiert zu eurem Ordner (dort wo ihr die csv-Tabelle gespeichert habt) navigieren. Beispiel (Windows): `cd c:\Users\chris\Medis\Tickets\2022\Runde1`
+     - b) navigiert zu eurem Ordner (dort wo ihr die csv-Tabelle gespeichert habt) navigieren. Beispiel (Windows): `cd c:\Users\MediOrga\Medis\Tickets\2022\Runde1`
      - c) gebt folgenden Befehl ein: `pip install virtualenv`
      - d) danach geht es mit diesem Befehl weiter: `virtualenv ImmaChecking` (Ihr erstellt eine virtuelle Umgebung für die Packages)
      - e) ihr aktiviert die Umgebung mit diesem Befehl:
