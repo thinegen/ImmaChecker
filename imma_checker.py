@@ -118,12 +118,22 @@ for csv_zeile in csv.iloc:
             f"[!] Das PDF ist leer:\n\tName: {name}\n\tDatei: {pdf_location}\n\t" + str(e))
 
     # Danach das Semester
-    if not any([string in config.semester for string in pdf_inhalt]):
+    im_richtigen_semester = any([
+        semester in string
+        for semester in config.semester
+        for string in pdf_inhalt
+    ])
+    if not im_richtigen_semester:
         ist_gueltig = False
         ablehnungsgrund.append("Falsches Semester")
 
     # Den Studiengang
-    if not any([string in config.studiengaenge for string in pdf_inhalt]):
+    im_richtigen_studiengang = any([
+        studiengang in string
+        for studiengang in config.studiengaenge
+        for string in pdf_inhalt
+    ])
+    if not im_richtigen_studiengang:
         ist_gueltig = False
         ablehnungsgrund.append("Falscher Studiengang")
 

@@ -8,7 +8,7 @@ imma_path = "immatrikulationsbescheinigungen"
 output_pfad = "output"
 
 # Die Studiengänge, die mit auf die Medis dürfen, genau so wie sie in der Immatrikulationsbescheinigung stehen
-studiengaenge = ["Zahnmedizin", "Medizin Erlangen/Bayreuth", "Medizin"]
+studiengaenge = ["Zahnmedizin", "Humanmedizin", "Medizin"]
 
 # Das aktuelle Semester wie in der Immatrikulationsbescheinigung.
 # Falls es hier mehrere Möglichkeiten gibt, könnt ihr wie bei den Studiengängen
@@ -23,7 +23,7 @@ imma_bescheinigung_spalte = "Immatrikulationsbescheinigung"
 
 # Die Regular Expression, die den Namen herausfiltert.
 # Wendet euch bei Fragen an mich oder an den Informatiker eures Vertrauens
-namen_regex = r"(?:Herr|Frau) ([A-zÀ-ú@0-9- üÜ]*), (?:geboren|Matrikel-Nr.:)"
+namen_regex = r"(?:Herr|Frau)\s+([A-zÀ-ú@0-9- üÜ]*),\s+(?:geboren|Matrikel-Nr.:)"
 
 # Ab hier kommen Sachen die nur verändert werden sollten,
 # wenn ihr wisst was ihr macht (oder neugierig seid)
