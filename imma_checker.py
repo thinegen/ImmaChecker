@@ -1,10 +1,14 @@
-import config
-import fitz
-import pandas
-import os
-import requests
-import re
-from fuzzywuzzy import fuzz
+try:
+    import config
+    import fitz
+    import pandas
+    import os
+    import requests
+    import re
+    from fuzzywuzzy import fuzz
+except ImportError as e:
+    print("[!] Pythonmodule konnten nicht importiert werden. Wurde 'pip install -r requirements.txt' ausgeführt?\n\tFehler: " + str(e))
+    quit()
 
 # Zuerst ändern wir den aktuellen Ausführungspfad in den Ordner,
 # in dem die Python-Datei gespeichert ist. Das sollte zwar der Fall
