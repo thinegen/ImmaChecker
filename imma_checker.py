@@ -115,7 +115,11 @@ for csv_zeile in csv.iloc:
     # Zuerst prüfen wir, ob das PDF Inhalt hat
     if len(pdf_inhalt) == 0:
         print(
-            f"[!] Das PDF ist leer:\n\tName: {name}\n\tDatei: {pdf_location}\n\t" + str(e))
+            f"[!] Das PDF ist leer:\n\tName: {name}\n\tDatei: {pdf_location}")
+        ist_gueltig = False
+        ablehnungsgrund.append("Das PDF ist leer")
+        validierungsergebnisse.append((ist_gueltig, ablehnungsgrund, "", 0))
+        continue
 
     # Danach das Semester
     im_richtigen_semester = any([
