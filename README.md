@@ -1,6 +1,6 @@
 # ImmaChecker2.0
 
-Eine verbesserte Version von [pifinski/ImmaChecker](https://github.com/pifinski/ImmaChecker), von dem auch die Inspiration gekommen ist.
+How to make Immatrikulationschecking easy!
 
 ## Wie führe ich das Ganze aus?
 1. Erstellt euch einen kostenlosen AirTable-Account auf www.airtable.com
