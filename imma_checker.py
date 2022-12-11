@@ -66,6 +66,9 @@ for index, download_url in enumerate(csv["imma_download_url"]):
         imma_file_path = config.imma_path + "/" + str(index) + ".pdf"
 
         # Alles runterladen
+        if download_url is None:
+            print(
+            f"[!] Es konnte kein Downloadlink gefunden werden:\n\tName: {csv.iloc[index][config.vorname_spalte]} {csv.iloc[index][config.nachname_spalte]}")
         r = requests.get(download_url)
         with open(imma_file_path, 'wb') as f:
             f.write(r.content)
@@ -74,7 +77,7 @@ for index, download_url in enumerate(csv["imma_download_url"]):
     except Exception as e:
         # Bei Fehlern wird der Name und der Fehler noch einmal gesondert ausgegeben
         print(
-            f"[!] Beim Herunterladen einer Immatrikulationsbescheinigung ist ein Fehler aufgetreten:\n\tName: {csv.iloc[index][config.vorname_spalte]} {csv.iloc[index][config.nachname_spalte]}\n\tURL: {download_url}\n" + str(e))
+            f"[!] Beim Herunterladen einer Immatrikulationsbescheinigung ist ein Fehler aufgetreten:\n\tName: {csv.iloc[index][config.vorname_spalte]} {csv.iloc[index][config.nachname_spalte]}\n\tURL: {download_url}\n\t" + str(e))
 
 # Die Liste der runtergeladenen Immas wird gespeichert
 csv["immatrikulations_pdf_location"] = downloaded_imma_paths
