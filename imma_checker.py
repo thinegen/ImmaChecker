@@ -6,6 +6,8 @@ try:
     import requests
     import re
     from fuzzywuzzy import fuzz
+    from datetime import datetime
+    from dateutil import relativedelta
 except ImportError as e:
     print("[!] Pythonmodule konnten nicht importiert werden. Wurde 'pip install -r requirements.txt' ausgeführt?\n\tFehler: " + str(e))
     quit()
@@ -23,6 +25,20 @@ try:
 except Exception as e:
     print("[!] in namen_regex stimmt etwas nicht:\n\t" + str(e))
     quit()
+
+volljaehrigkeit_pruefen = True
+# Können wir das Medidatum parsen?
+if len(config.medis_erster_tag) == 0 or len(config.geburtsdatum_spalte) == 0:
+    volljaehrigkeit_pruefen = False
+else:
+    try:
+        parsed_medis_erster_tag = datetime.strptime(config.medis_erster_tag, '%d.%m.%Y')
+        mindestgeburtstag_medis_volljaehrigkeit = parsed_medis_erster_tag - relativedelta.relativedelta(years=18)
+        print(f"[i] Der erste Tag der Medis ist der {parsed_medis_erster_tag.strftime('%d.%m.%Y')}")
+        print(f"[i] Wer mit auf die Medis will muss spätestens am {mindestgeburtstag_medis_volljaehrigkeit.strftime('%d.%m.%Y')} geboren sein")
+    except Exception as e:
+        print(f"[!] Der erste Tag der Medis (config.py: medis_erster_tag) konnte nicht bestimmt werden. Das Datum sollte wie 08.06.2023 aussehen.\n\tFehler: "+str(e))
+        quit()
 
 # Pfade überprüfen. Existiert das CSV?
 # Existiert der Ordner in dem die Immatrikulationsbescheinigungen
@@ -46,6 +62,7 @@ try:
     csv[config.vorname_spalte]
     csv[config.nachname_spalte]
     csv[config.email_spalte]
+    csv[config.geburtsdatum_spalte]
     csv[config.imma_bescheinigung_spalte]
 except Exception as e:
     print("[!] Eine Spalte in der Tabelle scheint in config.py falsch zu sein:\n\t" + str(e))
@@ -90,12 +107,24 @@ for csv_zeile in csv.iloc:
 
     name = f"{csv_zeile[config.vorname_spalte]} {csv_zeile[config.nachname_spalte]}"
     email = csv_zeile[config.email_spalte]
+    geburtsdatum_parsen_ok = False
+
+    try:
+        parsed_geburtsdatum = datetime.strptime(csv_zeile[config.geburtsdatum_spalte], config.airtable_geburtstagsdatum_format)
+        geburtsdatum_str = parsed_geburtsdatum.strftime(config.geburtsdatum_format)
+        geburtsdatum_parsen_ok = True
+    except Exception as e:
+        print(
+            f"[!] Das Geburtsdatum konnte nicht geprüft werden:\n\tName: {name}\n\tDatei: {pdf_location}")
+        ist_gueltig = False
+        ablehnungsgrund.append("Geburtsdatum konnte nicht geprüft werden")
+
     pdf_location = csv_zeile["immatrikulations_pdf_location"]
 
     if pdf_location is None:
         # Wir haben kein PDF für diesen Eintrag
         ist_gueltig = False
-        ablehnungsgrund.append("Das PDF konnte nicht heruntergeladen werden.")
+        ablehnungsgrund.append("Das PDF konnte nicht heruntergeladen werden:\n\tName: {name}\n\tDatei: {pdf_location}")
         validierungsergebnisse.append((ist_gueltig, ablehnungsgrund, "", 0))
         continue
 
@@ -143,6 +172,20 @@ for csv_zeile in csv.iloc:
     if not im_richtigen_studiengang:
         ist_gueltig = False
         ablehnungsgrund.append("Falscher Studiengang")
+
+    # Die Volljährigkeit
+    if volljaehrigkeit_pruefen and geburtsdatum_parsen_ok:
+        hat_richtiges_geburtsdatum = any([
+            geburtsdatum_str in string
+            for string in pdf_inhalt
+        ])
+        if hat_richtiges_geburtsdatum:
+            if mindestgeburtstag_medis_volljaehrigkeit < parsed_geburtsdatum:
+                ist_gueltig = False
+                ablehnungsgrund.append("Minderjährig")
+        else:
+            ist_gueltig = False
+            ablehnungsgrund.append("Geburtsdatum nicht in der Immatrikulationsbescheinigung")
 
     # Den Namen
     namens_kandidaten = []

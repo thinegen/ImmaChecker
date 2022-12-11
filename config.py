@@ -21,6 +21,16 @@ nachname_spalte = "Nachname"
 email_spalte = "Email"
 imma_bescheinigung_spalte = "Immatrikulationsbescheinigung"
 
+# Das Geburtsdatum
+# Falls diese Spalte leer ist (geburtsdatum_spalte = ""), wird nicht überprüft, ob jemand volljährig ist
+geburtsdatum_spalte = "Geburtstag"
+# Das Geburtsdatumsformat, wie es in den Immatrikulationsbescheinigungen steht.
+# Falls euer Geburtsdatum anders aussieht als tt.mm.JJJJ könnt ihr es hier anpassen
+geburtsdatum_format = "%d.%m.%Y"
+
+# Der erste Tag der Medis (also der Tag, an dem die Leute Geburtstag haben müssen, um 18 zu sein)
+medis_erster_tag = "08.06.2023"
+
 # Die Regular Expression, die den Namen herausfiltert.
 # Wendet euch bei Fragen an mich oder an den Informatiker eures Vertrauens
 namen_regex = r"(?:Herr|Frau)\s+([A-zÀ-ú@0-9- üÜ]*),\s+(?:geboren|Matrikel-Nr.:)"
@@ -29,6 +39,9 @@ namen_regex = r"(?:Herr|Frau)\s+([A-zÀ-ú@0-9- üÜ]*),\s+(?:geboren|Matrikel-N
 # wenn ihr wisst was ihr macht (oder neugierig seid)
 # Das Regex für den Airtable Imma Upload
 uploaded_imma_regex = "([0-9]{4}-[0-9]{2}-[0-9]{2})?\ ?([A-z0-9\.]*) \((http[s]:\/\/[A-z0-9_\-\.\/]*)\)"
+
+# Das Format des Geburtsdatums in Airtable
+airtable_geburtstagsdatum_format = "%d/%m/%Y"
 
 # Der maximale Levensthein Wert zum Namensvergleich
 levensthein_cutoff = 66

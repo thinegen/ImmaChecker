@@ -2,5 +2,6 @@ fuzzywuzzy
 openpyxl
 pandas
 PyMuPDF
+python-dateutil
 python-Levenshtein
 requests
