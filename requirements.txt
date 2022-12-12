@@ -1,4 +1,7 @@
-pandas
-numpy
 fuzzywuzzy
-xlsxwriter
+openpyxl
+pandas
+PyMuPDF
+python-dateutil
+python-Levenshtein
+requests
