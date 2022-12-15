@@ -75,6 +75,8 @@ split = csv[config.imma_bescheinigung_spalte].str.split(
     config.uploaded_imma_regex, regex=True, expand=True)
 csv["imma_upload_date"], csv["imma_filename"], csv["imma_download_url"] = split[1], split[2], split[3]
 
+print("[i] Es werden alle Immatrikulationsbescheinigungen heruntergeladen. Das dauert etwas.")
+
 # Jetzt speichern wir alle Immas
 downloaded_imma_paths = [None] * len(csv["imma_download_url"])
 for index, download_url in enumerate(csv["imma_download_url"]):
@@ -98,6 +100,8 @@ for index, download_url in enumerate(csv["imma_download_url"]):
 
 # Die Liste der runtergeladenen Immas wird gespeichert
 csv["immatrikulations_pdf_location"] = downloaded_imma_paths
+
+print("[i] Die Immatrikulationsbescheinigungen werden geprüft.")
 
 # Jetzt validieren wir alle PDFs
 validierungsergebnisse = []
@@ -209,8 +213,11 @@ for csv_zeile in csv.iloc:
         ist_gueltig = False
         ablehnungsgrund.append("Name nicht gefunden")
     
-    # bester Namenskandidat
-    bester_name = sorted(levenshtein_ratios,key=lambda item: item[1], reverse=True)[0]
+    if len(levenshtein_ratios) > 0:
+        # bester Namenskandidat
+        bester_name = sorted(levenshtein_ratios,key=lambda item: item[1], reverse=True)[0]
+    else:
+        bester_name = ("", 0)
 
     # Das Ergebnis wird in eine Liste geschrieben, die später mit den anderen
     # Daten zusammengeführt wird
