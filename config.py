@@ -10,6 +10,9 @@ output_pfad = "output"
 # Die Studiengänge, die mit auf die Medis dürfen, genau so wie sie in der Immatrikulationsbescheinigung stehen
 studiengaenge = ["Zahnmedizin", "Humanmedizin", "Medizin"]
 
+# Die erlaubten Endungen der Emailadresse
+erlaubte_email_domains = ["fau.de", "uni-erlangen.de"]
+
 # Das aktuelle Semester wie in der Immatrikulationsbescheinigung.
 # Falls es hier mehrere Möglichkeiten gibt, könnt ihr wie bei den Studiengängen
 # eine Liste erstellen (also z. B. ["semester1", "semester2"]).

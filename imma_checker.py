@@ -163,6 +163,13 @@ for csv_zeile in csv.iloc:
         ist_gueltig = False
         ablehnungsgrund.append("Falsches Semester")
 
+    # Die Maildomain
+    if len(config.erlaubte_email_domains) > 0:
+        email_teile = email.split("@")
+        if len(email_teile) != 2 or (len(email_teile) == 2 and email_teile[1] not in config.erlaubte_email_domains):
+            ist_gueltig = False
+            ablehnungsgrund.append("Falsche Emaildomain")
+
     # Den Studiengang
     im_richtigen_studiengang = any([
         studiengang in string
