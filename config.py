@@ -29,7 +29,8 @@ imma_bescheinigung_spalte = "Immatrikulationsbescheinigung"
 geburtsdatum_spalte = "Geburtstag"
 # Das Geburtsdatumsformat, wie es in den Immatrikulationsbescheinigungen steht.
 # Falls euer Geburtsdatum anders aussieht als tt.mm.JJJJ könnt ihr es hier anpassen
-geburtsdatum_format = "%d.%m.%Y"
+# Auch hier könnt ihr mehrere Möglichkeiten angeben
+geburtsdatum_formate = ["%d.%m.%Y", "%d %B %Y"]
 
 # Der erste Tag der Medis (also der Tag, an dem die Leute Geburtstag haben müssen, um 18 zu sein)
 medis_erster_tag = "08.06.2023"

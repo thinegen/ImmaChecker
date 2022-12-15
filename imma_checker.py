@@ -114,10 +114,11 @@ for csv_zeile in csv.iloc:
     geburtsdatum_parsen_ok = False
     pdf_location = csv_zeile["immatrikulations_pdf_location"]
 
+    geburtsdaten_formatiert = []
     try:
         parsed_geburtsdatum = datetime.strptime(csv_zeile[config.geburtsdatum_spalte], config.airtable_geburtstagsdatum_format)
-        geburtsdatum_str = parsed_geburtsdatum.strftime(config.geburtsdatum_format)
-        geburtsdatum_parsen_ok = True
+        for datumsformat in config.geburtsdatum_formate:
+            geburtsdaten_formatiert.append(parsed_geburtsdatum.strftime(datumsformat))
     except Exception as e:
         print(
             f"[!] Das Geburtsdatum konnte nicht geprüft werden. Wahrscheinlich steht im CSV kein Datum oder es ist im falschen Format:\n\tName: {name}\n\tDatei: {pdf_location}")
@@ -186,8 +187,9 @@ for csv_zeile in csv.iloc:
     # Die Volljährigkeit
     if volljaehrigkeit_pruefen and geburtsdatum_parsen_ok:
         hat_richtiges_geburtsdatum = any([
-            geburtsdatum_str in string
+            geburtsdatums_str in string
             for string in pdf_inhalt
+            for geburtsdatums_str in geburtsdaten_formatiert
         ])
         if hat_richtiges_geburtsdatum:
             if mindestgeburtstag_medis_volljaehrigkeit < parsed_geburtsdatum:
