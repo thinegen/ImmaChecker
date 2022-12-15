@@ -108,6 +108,7 @@ for csv_zeile in csv.iloc:
     name = f"{csv_zeile[config.vorname_spalte]} {csv_zeile[config.nachname_spalte]}"
     email = csv_zeile[config.email_spalte]
     geburtsdatum_parsen_ok = False
+    pdf_location = csv_zeile["immatrikulations_pdf_location"]
 
     try:
         parsed_geburtsdatum = datetime.strptime(csv_zeile[config.geburtsdatum_spalte], config.airtable_geburtstagsdatum_format)
@@ -115,11 +116,9 @@ for csv_zeile in csv.iloc:
         geburtsdatum_parsen_ok = True
     except Exception as e:
         print(
-            f"[!] Das Geburtsdatum konnte nicht geprüft werden:\n\tName: {name}\n\tDatei: {pdf_location}")
+            f"[!] Das Geburtsdatum konnte nicht geprüft werden. Wahrscheinlich steht im CSV kein Datum oder es ist im falschen Format:\n\tName: {name}\n\tDatei: {pdf_location}")
         ist_gueltig = False
         ablehnungsgrund.append("Geburtsdatum konnte nicht geprüft werden")
-
-    pdf_location = csv_zeile["immatrikulations_pdf_location"]
 
     if pdf_location is None:
         # Wir haben kein PDF für diesen Eintrag
