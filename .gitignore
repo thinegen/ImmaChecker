@@ -1,0 +1,4 @@
+immatrikulationsbescheinigungen/
+output/
+__pycache__/
+*.csv
