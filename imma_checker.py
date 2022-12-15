@@ -78,8 +78,14 @@ csv["imma_upload_date"], csv["imma_filename"], csv["imma_file_ending"], csv["imm
 print("[i] Es werden alle Immatrikulationsbescheinigungen heruntergeladen. Das dauert etwas.")
 
 # Jetzt speichern wir alle Immas
-downloaded_imma_paths = [None] * len(csv["imma_download_url"])
+zaehler = 0
+anzahl_zeilen = len(csv["imma_download_url"])
+downloaded_imma_paths = [None] * anzahl_zeilen
 for index, csv_zeile in enumerate(csv.iloc):
+    zaehler += 1
+    if zaehler % 50 == 0:
+        print(f"[i] {zaehler} von {anzahl_zeilen} Dateien heruntergeladen")
+
     try:
         download_url = csv_zeile["imma_download_url"]
         # Der Pfad, in dem die Imma gespeichert wird ist effektiv nur der angegebene Ordner und der Zeilenindex im CSV
