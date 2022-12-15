@@ -73,21 +73,23 @@ except Exception as e:
 # schreiben die Daten in unser CSV
 split = csv[config.imma_bescheinigung_spalte].str.split(
     config.uploaded_imma_regex, regex=True, expand=True)
-csv["imma_upload_date"], csv["imma_filename"], csv["imma_download_url"] = split[1], split[2], split[3]
+csv["imma_upload_date"], csv["imma_filename"], csv["imma_file_ending"], csv["imma_download_url"] = split[1], split[2], split[3], split[4]
 
 print("[i] Es werden alle Immatrikulationsbescheinigungen heruntergeladen. Das dauert etwas.")
 
 # Jetzt speichern wir alle Immas
 downloaded_imma_paths = [None] * len(csv["imma_download_url"])
-for index, download_url in enumerate(csv["imma_download_url"]):
+for index, csv_zeile in enumerate(csv.iloc):
     try:
+        download_url = csv_zeile["imma_download_url"]
         # Der Pfad, in dem die Imma gespeichert wird ist effektiv nur der angegebene Ordner und der Zeilenindex im CSV
-        imma_file_path = config.imma_path + "/" + str(index) + ".pdf"
+        imma_file_path = config.imma_path + "/" + str(index)  + "." + csv_zeile["imma_file_ending"]
 
         # Alles runterladen
         if download_url is None:
             print(
             f"[!] Es konnte kein Downloadlink gefunden werden:\n\tName: {csv.iloc[index][config.vorname_spalte]} {csv.iloc[index][config.nachname_spalte]}")
+            continue
         r = requests.get(download_url)
         with open(imma_file_path, 'wb') as f:
             f.write(r.content)
@@ -151,11 +153,11 @@ for csv_zeile in csv.iloc:
 
     # Jetzt überprüfen wir, ob alles im PDF steht:
     # Zuerst prüfen wir, ob das PDF Inhalt hat
-    if len(pdf_inhalt) == 0:
+    if len(pdf_inhalt) == 0 or (len(pdf_inhalt) == 1 and pdf_inhalt[0] == ''):
         print(
-            f"[!] Das PDF ist leer:\n\tName: {name}\n\tDatei: {pdf_location}")
+            f"[!] Das PDF ist leer, ein Scan oder die Datei ist kein PDF:\n\tName: {name}\n\tDatei: {pdf_location}")
         ist_gueltig = False
-        ablehnungsgrund.append("Das PDF ist leer")
+        ablehnungsgrund.append("Das PDF ist leer, ein Scan oder die Datei ist kein PDF")
         validierungsergebnisse.append((ist_gueltig, ablehnungsgrund, "", 0))
         continue
 
@@ -277,3 +279,7 @@ fehler = csv[~csv["Gültig"]]
 erfolg.to_excel(config.output_pfad + "/erfolg.xlsx", index=False)
 fehler.to_excel(config.output_pfad + "/fehler.xlsx", index=False)
 duplicates.to_excel(config.output_pfad + "/duplikate.xlsx", index=False)
+
+print("[i] Fertig!")
+print("[i] Alle Personen in output/fehler.xlsx und output/duplikate.xlsx sollten überprüft werden.")
+print("[i] Viel Spaß auf den Medis!")
