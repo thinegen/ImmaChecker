@@ -264,9 +264,14 @@ csv.insert(4, "bester Namenskandidat", csv.pop("bester Namenskandidat"))
 csv.insert(5, "Levenshteindistanz", csv.pop("Levenshteindistanz"))
 
 # Filtern der Ergebnisse
-duplicates = csv[csv.duplicated(subset=config.email_spalte, keep="first")]
+duplicates_mask = csv.duplicated(subset=config.email_spalte, keep=False)
+duplicates = csv[duplicates_mask]
+
+# Es werden nur deduplizierte Zeilen angenommen
+csv = csv[~duplicates_mask]
+
 erfolg = csv[csv["Gültig"]]
-fehler = csv[csv["Gültig"] != True]
+fehler = csv[~csv["Gültig"]]
 
 # Zum Schluss schreiben wir die Ergebnisse in den output-Pfad
 erfolg.to_excel(config.output_pfad + "/erfolg.xlsx", index=False)
