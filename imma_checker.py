@@ -235,16 +235,20 @@ for csv_zeile in csv.iloc:
             for string in pdf_inhalt
         ])
     
+    # default: Name nicht gefunden
+    bester_name = ("", 0)
+
     # Wenn das alles nicht funktioniert gibt es den Namen wohl tatsächlich nicht
     if name_mit_regex_nicht_gefunden and not vorname_in_pdf and not nachname_in_pdf:
         ist_gueltig = False
         ablehnungsgrund.append("Name nicht gefunden")
-    
-    if len(levenshtein_ratios) > 0:
-        # bester Namenskandidat
-        bester_name = sorted(levenshtein_ratios,key=lambda item: item[1], reverse=True)[0]
     else:
-        bester_name = ("", 0)
+        # Es wurde ein Name gefunden
+        bester_name = (name, 100)
+    
+    # Falls mit Levensthein gefunden ist das der beste Namenskandidat
+    if not name_mit_regex_nicht_gefunden and len(levenshtein_ratios) > 0:
+        bester_name = sorted(levenshtein_ratios,key=lambda item: item[1], reverse=True)[0]
 
     # Das Ergebnis wird in eine Liste geschrieben, die später mit den anderen
     # Daten zusammengeführt wird
