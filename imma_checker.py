@@ -109,7 +109,9 @@ for csv_zeile in csv.iloc:
     ist_gueltig = True
     ablehnungsgrund = []
 
-    name = f"{csv_zeile[config.vorname_spalte]} {csv_zeile[config.nachname_spalte]}"
+    vorname = csv_zeile[config.vorname_spalte]
+    nachname = csv_zeile[config.nachname_spalte]
+    name = f"{vorname} {nachname}"
     email = csv_zeile[config.email_spalte]
     geburtsdatum_parsen_ok = False
     pdf_location = csv_zeile["immatrikulations_pdf_location"]
@@ -211,7 +213,22 @@ for csv_zeile in csv.iloc:
     levenshtein_ratios = []
     for kandidat in namens_kandidaten:
         levenshtein_ratios.append((kandidat, fuzz.token_sort_ratio(name, kandidat)))
-    if all([lr < config.levensthein_cutoff for (k, lr) in levenshtein_ratios]):
+
+    name_mit_regex_nicht_gefunden = all([lr < config.levensthein_cutoff for (k, lr) in levenshtein_ratios])
+
+    # Falls wir den Namen nicht finden, prüfen wir ob sich Vor- und Nachname einzeln finden lässt    
+    if name_mit_regex_nicht_gefunden:
+        vorname_in_pdf = any([
+            vorname in string
+            for string in pdf_inhalt
+        ])
+        nachname_in_pdf = any([
+            nachname in string
+            for string in pdf_inhalt
+        ])
+    
+    # Wenn das alles nicht funktioniert gibt es den Namen wohl tatsächlich nicht
+    if name_mit_regex_nicht_gefunden and not vorname_in_pdf and not nachname_in_pdf:
         ist_gueltig = False
         ablehnungsgrund.append("Name nicht gefunden")
     
