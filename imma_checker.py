@@ -133,12 +133,12 @@ for csv_zeile in csv.iloc:
         print(
             f"[!] Das Geburtsdatum konnte nicht geprüft werden. Wahrscheinlich steht im CSV kein Datum oder es ist im falschen Format:\n\tName: {name}\n\tDatei: {pdf_location}")
         ist_gueltig = False
-        ablehnungsgrund.append("Geburtsdatum konnte nicht geprüft werden")
+        ablehnungsgrund.append("Beim Geburtsdatum im CSV stimmt etwas nicht")
 
     if pdf_location is None:
         # Wir haben kein PDF für diesen Eintrag
         ist_gueltig = False
-        ablehnungsgrund.append("Das PDF konnte nicht heruntergeladen werden:\n\tName: {name}\n\tDatei: {pdf_location}")
+        ablehnungsgrund.append("Das PDF konnte nicht heruntergeladen werden")
         validierungsergebnisse.append((ist_gueltig, ablehnungsgrund, "", 0))
         continue
 
