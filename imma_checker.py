@@ -84,7 +84,7 @@ downloaded_imma_paths = [None] * anzahl_zeilen
 for index, csv_zeile in enumerate(csv.iloc):
     zaehler += 1
     if zaehler % 50 == 0:
-        print(f"[i] {zaehler} von {anzahl_zeilen} Dateien heruntergeladen")
+        print(f"[i] {zaehler} von {anzahl_zeilen} Immatrikulationsbescheinigungen heruntergeladen")
 
     try:
         download_url = csv_zeile["imma_download_url"]
