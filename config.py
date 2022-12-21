@@ -39,6 +39,13 @@ medis_erster_tag = "08.06.2023"
 # Wendet euch bei Fragen an mich oder an den Informatiker eures Vertrauens
 namen_regex = r"(?:Herr|Frau)\s+([A-zÀ-ú@0-9- üÜ]*),\s+(?:geboren|Matrikel-Nr.:)"
 
+# Striktes Duplikate checken.
+# ACHTUNG: Mit dieser Option kann es einfacher zu Fehlern kommen. Überprüft die Duplikatetabelle bitte genauer.
+# Dafür werden Duplikate nicht nur anhand der Email, sondern auch anhand
+# des Namens und Geburtsdatums geprüft
+# Muss False oder True sein
+duplikate_namen_pruefen = False
+
 # Ab hier kommen Sachen die nur verändert werden sollten,
 # wenn ihr wisst was ihr macht (oder neugierig seid)
 # Das Regex für den Airtable Imma Upload
@@ -47,5 +54,8 @@ uploaded_imma_regex = "([0-9]{4}-[0-9]{2}-[0-9]{2})?\ ?([A-z0-9\ -_äÄüÜöÖ�
 # Das Format des Geburtsdatums in Airtable
 airtable_geburtstagsdatum_format = "%d/%m/%Y"
 
-# Der maximale Levensthein Wert zum Namensvergleich
-levensthein_cutoff = 66
+# Der minimale Levenshtein Wert für CSV und Imma Namensgleichheit
+name_parsen_levenshtein_cutoff = 66
+
+# Der minimale Levenshtein Wert für Namensduplikate
+name_duplikate_levenshtein_cutoff = 87

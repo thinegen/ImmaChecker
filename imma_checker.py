@@ -5,7 +5,7 @@ try:
     import os
     import requests
     import re
-    from fuzzywuzzy import fuzz
+    from fuzzywuzzy import fuzz, process
     from datetime import datetime
     from dateutil import relativedelta
 except ImportError as e:
@@ -216,13 +216,13 @@ for csv_zeile in csv.iloc:
         if match_result is not None:
             namens_kandidaten.append(match_result.group(1))
 
-    # Für den Namen berechnen wir die Levenstheindistanz, einen Wert zur Bestimmung des Abstandes
+    # Für den Namen berechnen wir die Levenshteindistanz, einen Wert zur Bestimmung des Abstandes
     # zweier Zeichenketten
     levenshtein_ratios = []
     for kandidat in namens_kandidaten:
         levenshtein_ratios.append((kandidat, fuzz.token_sort_ratio(name, kandidat)))
 
-    name_mit_regex_nicht_gefunden = all([lr < config.levensthein_cutoff for (k, lr) in levenshtein_ratios])
+    name_mit_regex_nicht_gefunden = all([lr < config.name_parsen_levenshtein_cutoff for (k, lr) in levenshtein_ratios])
 
     # Falls wir den Namen nicht finden, prüfen wir ob sich Vor- und Nachname einzeln finden lässt    
     if name_mit_regex_nicht_gefunden:
@@ -246,7 +246,7 @@ for csv_zeile in csv.iloc:
         # Es wurde ein Name gefunden
         bester_name = (name, 100)
     
-    # Falls mit Levensthein gefunden ist das der beste Namenskandidat
+    # Falls mit Levenshtein gefunden ist das der beste Namenskandidat
     if not name_mit_regex_nicht_gefunden and len(levenshtein_ratios) > 0:
         bester_name = sorted(levenshtein_ratios,key=lambda item: item[1], reverse=True)[0]
 
@@ -256,13 +256,13 @@ for csv_zeile in csv.iloc:
 
 # Hier wird die Validierung zusammengeführt
 csv["Gültig"] = [ist_gueltig for (
-    ist_gueltig, ablehnungsgrund, namenskandidat, levensthein_distance) in validierungsergebnisse]
+    ist_gueltig, ablehnungsgrund, namenskandidat, levenshtein_distance) in validierungsergebnisse]
 csv["Ablehnungsgrund"] = ["/".join(ablehnungsgrund)
-                          for (ist_gueltig, ablehnungsgrund, namenskandidat, levensthein_distance) in validierungsergebnisse]
+                          for (ist_gueltig, ablehnungsgrund, namenskandidat, levenshtein_distance) in validierungsergebnisse]
 csv["bester Namenskandidat"] = [namenskandidat
-                          for (ist_gueltig, ablehnungsgrund, namenskandidat, levensthein_distance) in validierungsergebnisse]
-csv["Levenshteindistanz"] = [levensthein_distance
-                          for (ist_gueltig, ablehnungsgrund, namenskandidat, levensthein_distance) in validierungsergebnisse]
+                          for (ist_gueltig, ablehnungsgrund, namenskandidat, levenshtein_distance) in validierungsergebnisse]
+csv["Levenshteindistanz"] = [levenshtein_distance
+                          for (ist_gueltig, ablehnungsgrund, namenskandidat, levenshtein_distance) in validierungsergebnisse]
 
 # Neuordnung der Spalten:
 csv.insert(0, config.vorname_spalte, csv.pop(config.vorname_spalte))
@@ -275,8 +275,30 @@ csv.insert(5, "Ablehnungsgrund", csv.pop("Ablehnungsgrund"))
 csv.insert(4, "bester Namenskandidat", csv.pop("bester Namenskandidat"))
 csv.insert(5, "Levenshteindistanz", csv.pop("Levenshteindistanz"))
 
-# Filtern der Ergebnisse
+# Filtern der Duplikate
+# Anhand der Emailadresse
 duplicates_mask = csv.duplicated(subset=config.email_spalte, keep=False)
+
+# Optional anhand des Namens
+if config.duplikate_namen_pruefen:
+    print("[i] Die Namensduplikate werden geprüft. Das dauert etwas.")
+
+    name_duplicates_mask = [False] * anzahl_zeilen
+    # Wir bauen noch einen Namensindex zur Duplikatsüberprüfung
+    csv['Voller Name'] = csv.apply(lambda row: f"{row[config.vorname_spalte]}{row[config.nachname_spalte]}", axis = 1)
+
+    for csv_zeile in csv.iloc:
+        person1 = csv_zeile['Voller Name']
+        processed = process.extract(person1, csv["Voller Name"], scorer=fuzz.ratio, limit=50)
+        processed = [p for p in processed if p[1] > config.name_duplikate_levenshtein_cutoff]
+        # Wenn nur eine Person gematcht wird ist das die aktuell überprüfte
+        if len(processed) <= 1:
+            continue
+        for i in processed:
+            name_duplicates_mask[i[2]] = True
+
+    duplicates_mask = duplicates_mask | name_duplicates_mask
+
 duplicates = csv[duplicates_mask]
 
 # Es werden nur deduplizierte Zeilen angenommen
